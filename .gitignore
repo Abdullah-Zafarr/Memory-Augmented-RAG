@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+
+# Virtual environments
+.venv
+
+# Private Environment Config
+.env
+
+# Vector Store / Memory storage
+chroma_db/
+mem0_db/
+
