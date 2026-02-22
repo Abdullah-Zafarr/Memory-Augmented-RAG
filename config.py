@@ -1,63 +1,25 @@
-"""
-config.py
----------
-Centralised configuration for the Memory-Augmented-RAG system.
-All settings are loaded from environment variables (via .env) so that no
-secrets are hard-coded in source files.
-"""
-
 import os
 from dotenv import load_dotenv
-
 load_dotenv()
 
-# ---------------------------------------------------------------------------
-# LLM (Groq)
-# ---------------------------------------------------------------------------
-GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+g = lambda k, d: os.getenv(k, d)
+gi = lambda k, d: int(g(k, d))
+gf = lambda k, d: float(g(k, d))
 
-# ---------------------------------------------------------------------------
-# Mem0 memory
-# ---------------------------------------------------------------------------
-MEM0_API_KEY: str = os.getenv("MEM0_API_KEY", "")          # optional cloud key
-MEM0_COLLECTION: str = os.getenv("MEM0_COLLECTION", "rag_memory")
-MEM0_USER_ID: str = os.getenv("MEM0_USER_ID", "default_user")
-
-# ---------------------------------------------------------------------------
-# ChromaDB vector store
-# ---------------------------------------------------------------------------
-CHROMA_PERSIST_DIR: str = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
-CHROMA_COLLECTION: str = os.getenv("CHROMA_COLLECTION", "rag_docs")
-
-# ---------------------------------------------------------------------------
-# Embedding model (used by ChromaDB)
-# ---------------------------------------------------------------------------
-EMBEDDING_MODEL: str = os.getenv(
-    "EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
-)
-
-# ---------------------------------------------------------------------------
-# Document ingestion
-# ---------------------------------------------------------------------------
-CHUNK_SIZE: int = int(os.getenv("CHUNK_SIZE", 800))
-CHUNK_OVERLAP: int = int(os.getenv("CHUNK_OVERLAP", 100))
-
-# ---------------------------------------------------------------------------
-# Retrieval settings
-# ---------------------------------------------------------------------------
-TOP_K_DOCS: int = int(os.getenv("TOP_K_DOCS", 5))          # docs from ChromaDB
-TOP_K_MEMORY: int = int(os.getenv("TOP_K_MEMORY", 3))      # entries from Mem0
-
-# ---------------------------------------------------------------------------
-# LLM generation
-# ---------------------------------------------------------------------------
-MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", 1024))
-TEMPERATURE: float = float(os.getenv("TEMPERATURE", 0.3))
-
-# ---------------------------------------------------------------------------
-# Streamlit
-# ---------------------------------------------------------------------------
-APP_TITLE: str = "Memory-Augmented RAG"
-APP_ICON: str = "🧠"
-DEFAULT_USER_ID: str = "default_user"
+GROQ_API_KEY = g("GROQ_API_KEY", "")
+GROQ_MODEL = g("GROQ_MODEL", "llama-3.3-70b-versatile")
+MEM0_API_KEY = g("MEM0_API_KEY", "")
+MEM0_COLLECTION = g("MEM0_COLLECTION", "rag_memory")
+MEM0_USER_ID = g("MEM0_USER_ID", "default_user")
+CHROMA_PERSIST_DIR = g("CHROMA_PERSIST_DIR", "./chroma_db")
+CHROMA_COLLECTION = g("CHROMA_COLLECTION", "rag_docs")
+EMBEDDING_MODEL = g("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+CHUNK_SIZE = gi("CHUNK_SIZE", 800)
+CHUNK_OVERLAP = gi("CHUNK_OVERLAP", 100)
+TOP_K_DOCS = gi("TOP_K_DOCS", 5)
+TOP_K_MEMORY = gi("TOP_K_MEMORY", 3)
+MAX_TOKENS = gi("MAX_TOKENS", 1024)
+TEMPERATURE = gf("TEMPERATURE", 0.3)
+APP_TITLE = "Memory-Augmented RAG"
+APP_ICON = "🧠"
+DEFAULT_USER_ID = "default_user"
