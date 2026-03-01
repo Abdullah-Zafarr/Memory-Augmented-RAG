@@ -9,3 +9,4 @@ AUTHOR = 'Abdullah Zafarr'
 LICENSE = 'MIT'
 SUPPORT_EMAIL = 'support@example.com'
 API_RATE_LIMIT = 100
+ENABLE_TELEMETRY = False
