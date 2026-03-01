@@ -5,3 +5,4 @@ ENABLE_CACHE = True
 CACHE_TTL = 3600
 DEBUG_MODE = False
 VERSION = '1.0.1'
+AUTHOR = 'Abdullah Zafarr'
