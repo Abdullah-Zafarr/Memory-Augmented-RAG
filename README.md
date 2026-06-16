@@ -91,6 +91,25 @@ streamlit run app.py
 
 ---
 
+
+## 🗺️ Project Architecture
+
+```
+┌─────────────────┐       ┌──────────────────────┐
+│  Streamlit UI   ├──────►│  RAG Query Pipeline  │
+└────────┬────────┘       └──────────┬───────────┘
+         │                           │
+         ▼                           ▼
+┌─────────────────┐       ┌──────────────────────┐
+│   Mem0 (Local)  │       │ ChromaDB (Documents) │
+└─────────────────┘       └──────────────────────┘
+```
+
+- **`app.py`**: The Streamlit user interface with CSS glassmorphic overrides.
+- **`rag_pipeline.py`**: Coordinates text extraction, chunking, memory insertion, and Groq inference.
+- **`vector_store.py`**: Handles low-level ChromaDB interaction and Sentence Transformers.
+- **`memory.py`**: User-scoped persistent conversation engrams via Mem0.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request
