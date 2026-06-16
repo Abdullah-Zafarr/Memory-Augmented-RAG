@@ -1,12 +1,19 @@
 import os
 from dotenv import load_dotenv
+import logging
+
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 g = lambda k, d: os.getenv(k, d)
 gi = lambda k, d: int(g(k, d))
 gf = lambda k, d: float(g(k, d))
 
 GROQ_API_KEY = g("GROQ_API_KEY", "")
+if not GROQ_API_KEY:
+    logger.warning("GROQ_API_KEY is not set in environment variables.")
+
 GROQ_MODEL = g("GROQ_MODEL", "llama-3.3-70b-versatile")
 MEM0_API_KEY = g("MEM0_API_KEY", "")
 MEM0_COLLECTION = g("MEM0_COLLECTION", "rag_memory")
