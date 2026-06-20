@@ -1,5 +1,6 @@
 import logging, uuid, config, llm, memory as mem, vector_store as vs
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+import time
 logger = logging.getLogger(__name__)
 
 def ingest_text(text: str, src: str) -> int:
@@ -7,7 +8,15 @@ def ingest_text(text: str, src: str) -> int:
     chunks = ts.split_text(text)
     if not chunks: return 0
     ids = [str(uuid.uuid4()) for _ in chunks]
-    mdata = [{"source": src, "index": i, "file_type": "markdown" if src.endswith(".md") else "text"} for i in range(len(chunks))]
+    timestamp = time.time()
+    mdata = [
+        {
+            "source": src, 
+            "index": i, 
+            "file_type": "markdown" if src.endswith(".md") else "text",
+            "ingested_at": timestamp
+        } for i in range(len(chunks))
+    ]
     vs.add_documents(chunks, mdata, ids)
     return len(chunks)
 
