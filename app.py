@@ -17,8 +17,14 @@ with st.sidebar:
                 st.markdown(f"<div class='memory-card'><div style='color:#ddd; font-size:0.9rem;'>{m.get('memory') or m.get('text', 'Unknown')}</div><div class='memory-id'>ID: {m.get('id', 'N/A')}</div></div>", unsafe_allow_html=True)
         else: st.info("NO MEMORY")
     except Exception as e: st.error(f"SYNC FAIL: {e}")
-    st.markdown("---\n### DATA INGESTION")
-    files = st.file_uploader("UPLOAD", type=["txt"], accept_multiple_files=True)
+    
+    st.markdown("---
+### DIAGNOSTICS")
+    show_telemetry = st.checkbox("SHOW TELEMETRY", value=True)
+    
+    st.markdown("---
+### DATA INGESTION")
+    files = st.file_uploader("UPLOAD", type=["txt", "md"], accept_multiple_files=True)
     if files and st.button("INITIATE"):
         with st.spinner("PROCESSING..."):
             total = sum(rp.ingest_text(io.StringIO(f.getvalue().decode()).read(), f.name) for f in files)
@@ -41,10 +47,9 @@ if p := st.chat_input("Input command..."):
                 res = rp.query_rag(u_id, p)
                 st.markdown(res["answer"])
                 d, m = res.get("retrieved_docs", []), res.get("retrieved_memories", [])
-                if d or m:
+                if (d or m) and show_telemetry:
                     with st.expander("🔎 NEURAL TRACES"):
                         if m: st.markdown("#### 🧠 MEMORIES\n" + "\n".join(f"- {x}" for x in m))
                         if d: st.markdown("#### 📄 DOCUMENTS\n" + "\n".join(f"**{i+1}**: {x[:150]}..." for i, x in enumerate(d)))
                 st.session_state.messages.append({"role": "assistant", "content": res["answer"]})
             except Exception as e: st.error(f"ERROR: {e}")
-
