@@ -14,7 +14,14 @@ with st.sidebar:
         if mems:
             st.markdown(f"<div style='color:#888; font-size:0.8rem'>{len(mems)} ENGRAMS</div>", unsafe_allow_html=True)
             for m in mems:
-                st.markdown(f"<div class='memory-card'><div style='color:#ddd; font-size:0.9rem;'>{m.get('memory') or m.get('text', 'Unknown')}</div><div class='memory-id'>ID: {m.get('id', 'N/A')}</div></div>", unsafe_allow_html=True)
+                col1, col2 = st.columns([0.8, 0.2])
+                m_id = m.get('id', 'N/A')
+                with col1:
+                    st.markdown(f"<div class='memory-card'><div style='color:#ddd; font-size:0.9rem;'>{m.get('memory') or m.get('text', 'Unknown')}</div><div class='memory-id'>ID: {m_id}</div></div>", unsafe_allow_html=True)
+                with col2:
+                    if st.button("🗑️", key=f"del_{m_id}"):
+                        mem.delete_memory(u_id, m_id)
+                        st.rerun()
         else: st.info("NO MEMORY")
     except Exception as e: st.error(f"SYNC FAIL: {e}")
     
