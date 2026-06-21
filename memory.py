@@ -96,6 +96,15 @@ def get_all_memories(user_id: str) -> list[dict[str, Any]]:
         logger.warning("get_all_memories failed for user '%s': %s", user_id, exc)
         return []
 
+def delete_memory(user_id: str, memory_id: str) -> None:
+    """Delete a single memory item by its ID."""
+    client = get_memory_client()
+    try:
+        client.delete(memory_id)
+        logger.info("Deleted memory '%s' for user '%s'", memory_id, user_id)
+    except Exception as exc:
+        logger.warning("delete_memory failed for memory '%s': %s", memory_id, exc)
+
 def clear_memory(user_id: str) -> None:
     client = get_memory_client()
     try:
