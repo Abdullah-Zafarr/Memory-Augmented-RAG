@@ -45,7 +45,15 @@ def query_rag(u_id: str, q: str) -> dict:
            f"### Context from User Memory:\n- {'
 - '.join(mems) if mems else 'None'}")
     
-    prompt = f"You are a helpful assistant with knowledge base and memory.\n{ctx}\nAnswer using context. Prioritize documents."
+    prompt = (
+        "You are an advanced, context-aware assistant equipped with user memory and a document knowledge base.\n"
+        "Instructions:\n"
+        "1. Prioritize context from the uploaded documents when answering factual questions.\n"
+        "2. Incorporate context from user memories to personalize the interaction.\n"
+        "3. If document context contradicts memory context, prioritize the documents.\n"
+        "4. If no information is found in the context, answer based on general knowledge but indicate it is not in the context.\n\n"
+        f"{ctx}"
+    )
     msgs = llm.build_messages(prompt, q)
     ans = llm.generate(msgs)
     mem.store_memory(u_id, q, ans)
