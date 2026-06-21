@@ -1,7 +1,21 @@
 import logging, uuid, config, llm, memory as mem, vector_store as vs
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import time
+import io
+from pypdf import PdfReader
+
 logger = logging.getLogger(__name__)
+
+def parse_pdf(file_bytes: bytes) -> str:
+    try:
+        reader = PdfReader(io.BytesIO(file_bytes))
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() or ""
+        return text
+    except Exception as e:
+        logger.error(f"Failed to parse PDF bytes: {e}")
+        return ""
 
 def ingest_text(text: str, src: str) -> int:
     ts = RecursiveCharacterTextSplitter(chunk_size=config.CHUNK_SIZE, chunk_overlap=config.CHUNK_OVERLAP)
@@ -13,7 +27,7 @@ def ingest_text(text: str, src: str) -> int:
         {
             "source": src, 
             "index": i, 
-            "file_type": "markdown" if src.endswith(".md") else "text",
+            "file_type": "markdown" if src.endswith(".md") else ("pdf" if src.endswith(".pdf") else "text"),
             "ingested_at": timestamp
         } for i in range(len(chunks))
     ]
