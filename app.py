@@ -26,6 +26,10 @@ with st.sidebar:
     except Exception as e: st.error(f"SYNC FAIL: {e}")
     
     st.markdown("---
+### HYPERPARAMETERS")
+    temperature = st.slider("MODEL TEMPERATURE", min_value=0.0, max_value=1.0, value=config.TEMPERATURE, step=0.05)
+    
+    st.markdown("---
 ### DIAGNOSTICS")
     show_telemetry = st.checkbox("SHOW TELEMETRY", value=True)
     
