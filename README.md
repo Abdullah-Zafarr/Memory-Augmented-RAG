@@ -64,9 +64,12 @@ uv sync
 Create a `.env` file in the root directory and add your API keys:
 
 ```ini
+
 # LLM (Groq)
 GROQ_API_KEY=gsk_your_key_here
 GROQ_MODEL=llama-3.3-70b-versatile
+LOG_LEVEL=INFO
+
 
 # Memory & Vector Store (Local Mode)
 CHROMA_PERSIST_DIR=./chroma_db
