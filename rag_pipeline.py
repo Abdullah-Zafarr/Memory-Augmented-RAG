@@ -4,6 +4,7 @@ import time
 import io
 from pypdf import PdfReader
 from prompts import build_rag_system_prompt
+from utils import calculate_chunk_stats
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,10 @@ def ingest_text(text: str, src: str) -> int:
     ts = RecursiveCharacterTextSplitter(chunk_size=config.CHUNK_SIZE, chunk_overlap=config.CHUNK_OVERLAP)
     chunks = ts.split_text(text)
     if not chunks: return 0
+    
+    stats = calculate_chunk_stats(chunks)
+    logger.info(f"Ingesting {src}: chunk stats -> {stats}")
+    
     ids = [str(uuid.uuid4()) for _ in chunks]
     timestamp = time.time()
     mdata = [
