@@ -27,6 +27,7 @@ TOP_K_DOCS = gi("TOP_K_DOCS", 5)
 TOP_K_MEMORY = gi("TOP_K_MEMORY", 3)
 MAX_TOKENS = gi("MAX_TOKENS", 1024)
 TEMPERATURE = gf("TEMPERATURE", 0.3)
+LOG_LEVEL = g("LOG_LEVEL", "INFO")
 APP_TITLE = "Memory-Augmented RAG"
 APP_ICON = "🧠"
 DEFAULT_USER_ID = "default_user"
