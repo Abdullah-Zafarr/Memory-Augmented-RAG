@@ -131,7 +131,9 @@ with st.sidebar:
     files = st.file_uploader("UPLOAD", type=["txt", "md"], accept_multiple_files=True)
     if files and st.button("INITIATE"):
         with st.spinner("PROCESSING..."):
-            valid_files = [f for f in files if f.name.endswith(('.txt', '.md', '.pdf'))]
+            valid_files = [f for f in files if f.name.endswith(('.txt', '.md', '.pdf')) and f.size > 0]
+            if len(valid_files) != len(files):
+                st.warning("One or more empty or unsupported files were ignored.")
             if not valid_files:
                 st.error("No valid text, markdown or PDF files selected.")
             else:
