@@ -42,8 +42,12 @@ with st.sidebar:
     files = st.file_uploader("UPLOAD", type=["txt", "md"], accept_multiple_files=True)
     if files and st.button("INITIATE"):
         with st.spinner("PROCESSING..."):
-            total = sum(rp.ingest_text(io.StringIO(f.getvalue().decode()).read(), f.name) for f in files)
-            st.success(f"INDEXED {total} FRAGMENTS")
+            valid_files = [f for f in files if f.name.endswith(('.txt', '.md', '.pdf'))]
+            if not valid_files:
+                st.error("No valid text, markdown or PDF files selected.")
+            else:
+                total = sum(rp.ingest_text(io.StringIO(f.getvalue().decode('utf-8', errors='ignore')).read(), f.name) for f in valid_files)
+                st.success(f"INDEXED {total} FRAGMENTS")
 
 c1, c2 = st.columns([0.1, 0.9])
 with c1: st.markdown(f"<div style='font-size:3rem; padding-top:10px;'>{config.APP_ICON}</div>", unsafe_allow_html=True)
@@ -54,17 +58,21 @@ for msg in st.session_state.messages:
     with st.chat_message(msg["role"]): st.markdown(msg["content"])
 
 if p := st.chat_input("Input command..."):
-    st.session_state.messages.append({"role": "user", "content": p})
-    with st.chat_message("user"): st.markdown(p)
-    with st.chat_message("assistant"):
-        with st.spinner("ANALYZING..."):
-            try:
-                res = rp.query_rag(u_id, p)
-                st.markdown(res["answer"])
-                d, m = res.get("retrieved_docs", []), res.get("retrieved_memories", [])
-                if (d or m) and show_telemetry:
-                    with st.expander("🔎 NEURAL TRACES"):
-                        if m: st.markdown("#### 🧠 MEMORIES\n" + "\n".join(f"- {x}" for x in m))
-                        if d: st.markdown("#### 📄 DOCUMENTS\n" + "\n".join(f"**{i+1}**: {x[:150]}..." for i, x in enumerate(d)))
-                st.session_state.messages.append({"role": "assistant", "content": res["answer"]})
-            except Exception as e: st.error(f"ERROR: {e}")
+    p_stripped = p.strip()
+    if not p_stripped:
+         st.warning("Empty commands cannot be processed.")
+    else:
+         st.session_state.messages.append({"role": "user", "content": p_stripped})
+         with st.chat_message("user"): st.markdown(p_stripped)
+         with st.chat_message("assistant"):
+             with st.spinner("ANALYZING..."):
+                 try:
+                     res = rp.query_rag(u_id, p_stripped)
+                     st.markdown(res["answer"])
+                     d, m = res.get("retrieved_docs", []), res.get("retrieved_memories", [])
+                     if (d or m) and show_telemetry:
+                         with st.expander("🔎 NEURAL TRACES"):
+                             if m: st.markdown("#### 🧠 MEMORIES\n" + "\n".join(f"- {x}" for x in m))
+                             if d: st.markdown("#### 📄 DOCUMENTS\n" + "\n".join(f"**{i+1}**: {x[:150]}..." for i, x in enumerate(d)))
+                     st.session_state.messages.append({"role": "assistant", "content": res["answer"]})
+                 except Exception as e: st.error(f"ERROR: {e}")
