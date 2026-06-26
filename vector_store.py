@@ -57,7 +57,7 @@ def add_documents(
         logger.error(f"Error adding documents to ChromaDB: {e}")
         raise e
 
-def similarity_search(query: str, top_k: int | None = None) -> list[dict[str, Any]]:
+def similarity_search(query: str, top_k: int | None = None, filter_dict: dict | None = None) -> list[dict[str, Any]]:
     collection = _get_collection()
     k = top_k or config.TOP_K_DOCS
 
@@ -69,6 +69,7 @@ def similarity_search(query: str, top_k: int | None = None) -> list[dict[str, An
         results = collection.query(
             query_texts=[query],
             n_results=min(k, collection.count()),
+            where=filter_dict,
             include=["documents", "metadatas", "distances"],
         )
         docs = results.get("documents", [[]])[0]
