@@ -7,7 +7,7 @@ ChromaDB vector store – document storage and similarity retrieval.
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, List, Dict, Optional
 
 import chromadb
 from chromadb.utils import embedding_functions
@@ -16,8 +16,8 @@ import config
 
 logger = logging.getLogger(__name__)
 
-_chroma_client: chromadb.PersistentClient | None = None
-_collection: chromadb.Collection | None = None
+_chroma_client: Optional[chromadb.PersistentClient] = None
+_collection: Optional[chromadb.Collection] = None
 
 def _get_collection() -> chromadb.Collection:
     global _chroma_client, _collection
@@ -45,9 +45,9 @@ def _get_collection() -> chromadb.Collection:
     return _collection
 
 def add_documents(
-    documents: list[str],
-    metadatas: list[dict[str, Any]],
-    ids: list[str],
+    documents: List[str],
+    metadatas: List[Dict[str, Any]],
+    ids: List[str],
 ) -> None:
     try:
         collection = _get_collection()
@@ -57,7 +57,11 @@ def add_documents(
         logger.error(f"Error adding documents to ChromaDB: {e}")
         raise e
 
-def similarity_search(query: str, top_k: int | None = None, filter_dict: dict | None = None) -> list[dict[str, Any]]:
+def similarity_search(
+    query: str, 
+    top_k: Optional[int] = None, 
+    filter_dict: Optional[Dict[str, Any]] = None
+) -> List[Dict[str, Any]]:
     collection = _get_collection()
     k = top_k or config.TOP_K_DOCS
 
