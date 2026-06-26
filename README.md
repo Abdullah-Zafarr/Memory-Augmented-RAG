@@ -110,6 +110,17 @@ streamlit run app.py
 - **`vector_store.py`**: Handles low-level ChromaDB interaction and Sentence Transformers.
 - **`memory.py`**: User-scoped persistent conversation engrams via Mem0.
 
+
+## 📖 API Documentation Reference
+
+The backend services expose clear Python APIs for ingestion and retrieval:
+
+| Method | Signature | Description |
+| :--- | :--- | :--- |
+| `ingest_text` | `ingest_text(text: str, src: str) -> int` | Splits and indexes text documents into ChromaDB. |
+| `query_rag` | `query_rag(u_id: str, q: str) -> dict` | Queries both memory and documents, returning a blended context answer. |
+| `delete_memory` | `delete_memory(user_id: str, memory_id: str) -> None` | Deletes a single memory record by its identifier. |
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request
