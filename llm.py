@@ -2,6 +2,7 @@ import config
 import logging
 import time
 from groq import Groq
+from exceptions import LLMServiceError
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,7 @@ def generate(msgs, model=None, tokens=None, temp=None, max_retries=3):
         except Exception as e:
             logger.warning(f"Groq API call failed (attempt {attempt + 1}/{max_retries}): {e}")
             if attempt == max_retries - 1:
-                raise e
+                raise LLMServiceError(f"Failed to generate response after {max_retries} attempts: {e}")
             time.sleep(1 * (attempt + 1))
     return ""
 
