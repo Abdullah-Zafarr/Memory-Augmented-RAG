@@ -7,7 +7,7 @@ Persistent memory layer powered by Mem0.
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, List, Dict, Optional
 
 from mem0 import Memory
 
@@ -15,7 +15,7 @@ import config
 
 logger = logging.getLogger(__name__)
 
-def _build_mem0_config() -> dict[str, Any]:
+def _build_mem0_config() -> Dict[str, Any]:
     if not config.GROQ_API_KEY:
         logger.warning("GROQ_API_KEY not configured. Mem0 distillation may fail.")
     return {
@@ -41,7 +41,7 @@ def _build_mem0_config() -> dict[str, Any]:
         },
     }
 
-_memory_client: Memory | None = None
+_memory_client: Optional[Memory] = None
 
 def get_memory_client() -> Memory:
     global _memory_client
@@ -63,7 +63,7 @@ def store_memory(user_id: str, query: str, answer: str) -> None:
     except Exception as exc:
         logger.warning("Failed to store memory for user '%s': %s", user_id, exc)
 
-def retrieve_memory(user_id: str, query: str) -> list[str]:
+def retrieve_memory(user_id: str, query: str) -> List[str]:
     client = get_memory_client()
     try:
         results = client.search(
@@ -71,7 +71,7 @@ def retrieve_memory(user_id: str, query: str) -> list[str]:
             user_id=user_id,
             limit=config.TOP_K_MEMORY,
         )
-        memories: list[str] = []
+        memories: List[str] = []
         for item in results:
             if isinstance(item, dict):
                 text = item.get("memory") or item.get("text") or str(item)
@@ -85,7 +85,7 @@ def retrieve_memory(user_id: str, query: str) -> list[str]:
         logger.warning("Memory retrieval failed for user '%s': %s", user_id, exc)
         return []
 
-def get_all_memories(user_id: str) -> list[dict[str, Any]]:
+def get_all_memories(user_id: str) -> List[Dict[str, Any]]:
     client = get_memory_client()
     try:
         result = client.get_all(user_id=user_id)
