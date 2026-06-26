@@ -9,11 +9,15 @@ with st.sidebar:
     st.markdown("## 🧠 SYSTEM STATUS\n### MEMORY BANK")
     if st.button("PURGE MEMORY", type="primary"):
         mem.clear_memory(u_id); st.success("MEMORY CLEARED"); st.rerun()
+    
+    memory_search = st.text_input("FILTER MEMORIES", "")
+    
     try:
         mems = mem.get_all_memories(u_id)
         if mems:
-            st.markdown(f"<div style='color:#888; font-size:0.8rem'>{len(mems)} ENGRAMS</div>", unsafe_allow_html=True)
-            for m in mems:
+            filtered_mems = [m for m in mems if not memory_search or memory_search.lower() in (m.get('memory') or m.get('text', '')).lower()]
+            st.markdown(f"<div style='color:#888; font-size:0.8rem'>{len(filtered_mems)} ENGRAMS MATCHED</div>", unsafe_allow_html=True)
+            for m in filtered_mems:
                 col1, col2 = st.columns([0.8, 0.2])
                 m_id = m.get('id', 'N/A')
                 with col1:
