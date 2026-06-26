@@ -1,6 +1,95 @@
 import streamlit as st, logging, io, config, rag_pipeline as rp, memory as mem
 st.set_page_config(page_title=config.APP_TITLE, page_icon=config.APP_ICON, layout="wide")
-st.markdown("""<style>@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');:root{--bg-color:#050505;--sidebar-bg:#0a0a0a;--text-color:#e0e0e0;--accent-color:#00f2ff;--accent-glow:0 0 10px rgba(0,242,255,0.5);--card-bg:rgba(20,20,20,0.6);--border-color:#333}.stApp{background-color:var(--bg-color);font-family:Inter,sans-serif;color:var(--text-color)}h1,h2,h3,h4,h5,h6{font-family:Rajdhani,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px}h1{background:linear-gradient(90deg,#fff,#888);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(255,255,255,0.1)}[data-testid="stSidebar"]{background-color:var(--sidebar-bg);border-right:1px solid var(--border-color)}.stButton>button{background:transparent;border:1px solid var(--accent-color);color:var(--accent-color);font-family:Rajdhani,sans-serif;text-transform:uppercase;letter-spacing:1px;transition:all 0.3s ease;border-radius:4px}.stButton>button:hover{background:var(--accent-color);color:#000;box-shadow:var(--accent-glow);border-color:var(--accent-color)}[data-testid="stChatMessage"]{background:transparent;border-bottom:1px solid #1a1a1a}[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"]{font-family:Inter,sans-serif;line-height:1.6}.memory-card{background:var(--card-bg);border:1px solid var(--border-color);padding:1rem;border-radius:8px;margin-bottom:0.5rem;transition:all 0.2s}.memory-card:hover{border-color:var(--accent-color);transform:translateX(5px)}.memory-id{font-size:0.7rem;color:#666;font-family:Rajdhani,monospace}.streamlit-expanderHeader{background-color:#111;border-radius:4px;font-family:Rajdhani,sans-serif}.stChatInputContainer{border-top:1px solid var(--border-color);padding-top:1rem}</style>""", unsafe_allow_html=True)
+st.markdown("""<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');
+:root{
+  --bg-color:#050505;
+  --sidebar-bg:#09090b;
+  --text-color:#f4f4f5;
+  --accent-color:#06b6d4;
+  --accent-glow:0 0 15px rgba(6,182,212,0.4);
+  --card-bg:rgba(24,24,27,0.65);
+  --border-color:#27272a
+}
+.stApp{
+  background-color:var(--bg-color);
+  font-family:Inter,sans-serif;
+  color:var(--text-color)
+}
+h1,h2,h3,h4,h5,h6{
+  font-family:Rajdhani,sans-serif;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px
+}
+h1{
+  background:linear-gradient(90deg,#06b6d4,#ffffff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 20px rgba(6,182,212,0.15)
+}
+[data-testid="stSidebar"]{
+  background-color:var(--sidebar-bg);
+  border-right:1px solid var(--border-color)
+}
+.stButton>button{
+  background:transparent;
+  border:1px solid var(--accent-color);
+  color:var(--accent-color);
+  font-family:Rajdhani,sans-serif;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius:6px;
+  padding:0.5rem 1rem
+}
+.stButton>button:hover{
+  background:var(--accent-color);
+  color:#000000;
+  box-shadow:var(--accent-glow);
+  border-color:var(--accent-color);
+  transform:translateY(-1px)
+}
+[data-testid="stChatMessage"]{
+  background:transparent;
+  border-bottom:1px solid #18181b;
+  padding:1.5rem 0
+}
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"]{
+  font-family:Inter,sans-serif;
+  line-height:1.7
+}
+.memory-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  padding:1rem;
+  border-radius:10px;
+  margin-bottom:0.5rem;
+  transition:all 0.25s ease-in-out;
+  backdrop-filter:blur(8px)
+}
+.memory-card:hover{
+  border-color:var(--accent-color);
+  box-shadow:var(--accent-glow);
+  transform:translateX(4px)
+}
+.memory-id{
+  font-size:0.7rem;
+  color:#71717a;
+  font-family:Rajdhani,monospace;
+  margin-top:0.5rem
+}
+.streamlit-expanderHeader{
+  background-color:#18181b;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  font-family:Rajdhani,sans-serif
+}
+.stChatInputContainer{
+  border-top:1px solid var(--border-color);
+  padding-top:1rem
+}
+</style>""", unsafe_allow_html=True)
 
 u_id = config.DEFAULT_USER_ID
 if "messages" not in st.session_state: st.session_state.messages = []
