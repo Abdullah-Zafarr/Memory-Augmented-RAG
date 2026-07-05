@@ -1,5 +1,5 @@
 class RAGException(Exception):
-    """Base exception class for Memory-Augmented RAG system."""
+    """Base exception class for the Memory-Augmented RAG system."""
     pass
 
 class DatabaseConnectionError(RAGException):
