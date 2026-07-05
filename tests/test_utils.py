@@ -1,4 +1,4 @@
-from utils import calculate_chunk_stats
+from src.core.utils import calculate_chunk_stats
 
 def test_calculate_chunk_stats_empty():
     stats = calculate_chunk_stats([])
