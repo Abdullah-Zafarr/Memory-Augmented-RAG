@@ -45,11 +45,8 @@ def query_rag(u_id: str, q: str) -> dict:
     d_txts = [d["text"] for d in docs]
     mems = mem.retrieve_memory(u_id, q)
     
-    ctx = (f"### Context from Documents:\n{'
----
-'.join(d_txts) if d_txts else 'None'}\n\n"
-           f"### Context from User Memory:\n- {'
-- '.join(mems) if mems else 'None'}")
+    ctx = (f"### Context from Documents:\n{'\n---\n'.join(d_txts) if d_txts else 'None'}\n\n"
+           f"### Context from User Memory:\n- {'\n- '.join(mems) if mems else 'None'}")
     
     prompt = build_rag_system_prompt(ctx)
     msgs = llm.build_messages(prompt, q)
