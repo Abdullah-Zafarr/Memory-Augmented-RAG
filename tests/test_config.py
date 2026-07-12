@@ -1,4 +1,4 @@
-import config
+from src.core import config
 
 def test_default_config():
     assert config.APP_TITLE == "Memory-Augmented RAG"
