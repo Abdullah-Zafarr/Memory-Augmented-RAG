@@ -11,7 +11,7 @@ from typing import Any, List, Dict, Optional
 
 from mem0 import Memory
 
-import config
+from src.core import config
 
 logger = logging.getLogger(__name__)
 
