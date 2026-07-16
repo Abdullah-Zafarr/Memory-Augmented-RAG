@@ -1,8 +1,8 @@
-import config
+from src.core import config
 import logging
 import time
 from groq import Groq
-from exceptions import LLMServiceError
+from src.core.exceptions import LLMServiceError
 
 logger = logging.getLogger(__name__)
 
