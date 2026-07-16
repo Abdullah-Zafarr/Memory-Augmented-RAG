@@ -1,10 +1,12 @@
-import logging, uuid, config, llm, memory as mem, vector_store as vs
+import logging, uuid
+from src.core import config
+from src.rag import llm, memory as mem, vector_store as vs
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import time
 import io
 from pypdf import PdfReader
-from prompts import build_rag_system_prompt
-from utils import calculate_chunk_stats
+from src.rag.prompts import build_rag_system_prompt
+from src.core.utils import calculate_chunk_stats
 
 logger = logging.getLogger(__name__)
 
