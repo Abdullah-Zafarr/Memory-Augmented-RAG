@@ -1,5 +1,5 @@
 import pytest
-import rag_pipeline
+from src.rag import pipeline as rag_pipeline
 
 def test_parse_empty_pdf():
     text = rag_pipeline.parse_pdf(b"")
