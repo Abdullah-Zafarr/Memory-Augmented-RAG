@@ -1,4 +1,6 @@
-import streamlit as st, logging, io, config, rag_pipeline as rp, memory as mem
+import streamlit as st, logging, io
+from src.core import config
+from src.rag import pipeline as rp, memory as mem
 st.set_page_config(page_title=config.APP_TITLE, page_icon=config.APP_ICON, layout="wide")
 st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');
