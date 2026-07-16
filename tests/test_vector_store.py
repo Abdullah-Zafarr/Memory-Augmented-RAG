@@ -1,6 +1,6 @@
 import pytest
-import vector_store
-import rag_pipeline
+from src.rag import vector_store
+from src.rag import pipeline as rag_pipeline
 
 def test_count_documents():
     try:
