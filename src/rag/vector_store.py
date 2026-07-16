@@ -12,7 +12,7 @@ from typing import Any, List, Dict, Optional
 import chromadb
 from chromadb.utils import embedding_functions
 
-import config
+from src.core import config
 
 logger = logging.getLogger(__name__)
 
