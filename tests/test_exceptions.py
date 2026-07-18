@@ -1,5 +1,5 @@
+from src.core.exceptions import DatabaseConnectionError, RAGException
 import pytest
-from src.core.exceptions import RAGException, DatabaseConnectionError
 
 def test_exception_inheritance():
     exc = DatabaseConnectionError("Test connection failure")
