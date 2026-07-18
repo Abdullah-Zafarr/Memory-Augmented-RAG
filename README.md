@@ -137,3 +137,10 @@ Contributions are welcome! Please feel free to submit a Pull Request
 The codebase is organized into modular packages under the `src/` directory:
 - `src/core/`: Application constants, configuration, custom errors, and utils.
 - `src/rag/`: High-level pipeline processing, LLM connectors, and Mem0 capabilities.
+
+## Testing suite
+
+To run all the test modules in the repository, use:
+```bash
+uv run --with pytest python -m pytest
+```
