@@ -24,6 +24,8 @@ def _get_collection() -> chromadb.Collection:
 
     if _collection is None:
         try:
+            import os
+            os.makedirs(config.CHROMA_PERSIST_DIR, exist_ok=True)
             _chroma_client = chromadb.PersistentClient(path=config.CHROMA_PERSIST_DIR)
             ef = embedding_functions.SentenceTransformerEmbeddingFunction(
                 model_name=config.EMBEDDING_MODEL
