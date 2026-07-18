@@ -112,3 +112,4 @@ def clear_memory(user_id: str) -> None:
         logger.info("Cleared all memories for user '%s'", user_id)
     except Exception as exc:
         logger.warning("clear_memory failed for user '%s': %s", user_id, exc)
+        logger.debug(exc, exc_info=True)
