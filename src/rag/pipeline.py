@@ -22,7 +22,9 @@ def parse_pdf(file_bytes: bytes) -> str:
         return ""
 
 def ingest_text(text: str, src: str) -> int:
-    ts = RecursiveCharacterTextSplitter(chunk_size=config.CHUNK_SIZE, chunk_overlap=config.CHUNK_OVERLAP)
+    chunk_size = getattr(config, 'CHUNK_SIZE', 800)
+    chunk_overlap = getattr(config, 'CHUNK_OVERLAP', 100)
+    ts = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     chunks = ts.split_text(text)
     if not chunks: return 0
     
