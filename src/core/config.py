@@ -12,7 +12,7 @@ gf = lambda k, d: float(g(k, d))
 
 GROQ_API_KEY = g("GROQ_API_KEY", "")
 if not GROQ_API_KEY:
-    logger.warning("GROQ_API_KEY is not set in environment variables.")
+    logger.warning("GROQ_API_KEY environment variable is not configured. Please supply an API key.")
 
 GROQ_MODEL = g("GROQ_MODEL", "llama-3.3-70b-versatile")
 MEM0_API_KEY = g("MEM0_API_KEY", "")
