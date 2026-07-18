@@ -1,5 +1,8 @@
 def build_rag_system_prompt(ctx: str) -> str:
-    """Generates a structured system prompt for the RAG agent."""
+    """Generates a structured system prompt for the RAG agent.
+
+    The prompt instructs the LLM on prioritizing document context over user memory.
+    """
     return (
         "You are an advanced, context-aware assistant equipped with user memory and a document knowledge base.\n"
         "Instructions:\n"
