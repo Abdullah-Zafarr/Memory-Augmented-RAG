@@ -14,7 +14,7 @@ st.markdown("""<style>
   --border-color:#27272a
 }
 .stApp{
-  background-color:var(--bg-color);
+  background-color: var(--bg-color);
   font-family:Inter,sans-serif;
   color:var(--text-color)
 }
