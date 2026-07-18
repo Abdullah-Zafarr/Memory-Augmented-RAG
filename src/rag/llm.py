@@ -25,6 +25,8 @@ def generate(msgs, model=None, tokens=None, temp=None, max_retries=3):
                 max_tokens=tokens or config.MAX_TOKENS,
                 temperature=temp if temp is not None else config.TEMPERATURE
             )
+            if not res.choices:
+                return ""
             return res.choices[0].message.content or ""
         except Exception as e:
             logger.warning(f"Groq API call failed (attempt {attempt + 1}/{max_retries}): {e}")
